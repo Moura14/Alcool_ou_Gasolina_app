@@ -21,6 +21,19 @@ class _HomeScreensState extends State<HomeScreens> {
     });
   }
 
+  void calculate() {
+    setState(() {
+      double gasolina = double.parse(gasolinaController.text);
+      double alcool = double.parse(alcoolController.text);
+      double best = alcool / gasolina;
+      if (best < 0.7) {
+        text = "É melhor abastecer com álcool";
+      } else {
+        text = "É melhor abastecer com gasolina";
+      }
+    });
+  }
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -28,7 +41,25 @@ class _HomeScreensState extends State<HomeScreens> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.yellow,
         child: Icon(Icons.notification_important),
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                  title: Text("Entenda o cálculo"),
+                  content: Text(
+                      "Pegamos os 2 valores e dividimos, se o resultado for menor que 0.7 a melhor alternativa é abastecer com álcool, caso contrário abasteça com gasolina"),
+                  actions: [
+                    TextButton(
+                      child: Text("Fechar"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                );
+              });
+        },
       ),
       appBar: AppBar(
         backgroundColor: Colors.yellow,
@@ -55,6 +86,9 @@ class _HomeScreensState extends State<HomeScreens> {
                 SizedBox(
                   height: 10,
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -74,6 +108,9 @@ class _HomeScreensState extends State<HomeScreens> {
                           }
                           return null;
                         },
+                      ),
+                      SizedBox(
+                        height: 16,
                       ),
                       SizedBox(
                         height: 16,
@@ -104,7 +141,11 @@ class _HomeScreensState extends State<HomeScreens> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     color: Colors.yellow,
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        calculate();
+                      }
+                    },
                     child: Text(
                       "Calcular",
                       style: TextStyle(
