@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreens extends StatefulWidget {
   const HomeScreens({Key? key}) : super(key: key);
@@ -94,6 +96,11 @@ class _HomeScreensState extends State<HomeScreens> {
                   child: Column(
                     children: [
                       TextFormField(
+
+                       inputFormatters: [
+                         FilteringTextInputFormatter.digitsOnly,
+                         RealInputFormatter()
+                       ],
                         controller: gasolinaController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
@@ -101,6 +108,8 @@ class _HomeScreensState extends State<HomeScreens> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20)),
                             hintText: "Preço da gasolina",
+                            prefixText: "R\$",
+                           
                             isDense: true),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -116,12 +125,17 @@ class _HomeScreensState extends State<HomeScreens> {
                         height: 16,
                       ),
                       TextFormField(
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          RealInputFormatter()
+                        ],
                           controller: alcoolController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20)),
                             hintText: "Preço do álcool",
+                            prefixText: "R\$",
                             prefixIcon: Icon(Icons.local_gas_station_outlined),
                             isDense: true,
                           ),
